@@ -75,7 +75,10 @@ class Banner(models.Model):
     # 在后台管理页面 列表里 显示图片缩略图
     # https://stackoverflow.com/questions/16307307/django-admin-show-image-from-imagefield
     def image_data(self):
-        return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
+        if self.image:
+            return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
+        else:
+            return '图片未上传'
 
     # 页面显示的字段名称
     image_data.short_description = '图片缩略图'
