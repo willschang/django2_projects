@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'common',
     'xadmin',
     'crispy_forms',
     'reversion',
     'DjangoUeditor',
     'stdimage',
+    'rest_framework',
 ]
 # 此处重载是为了使我们的UserProfile生效
 AUTH_USER_MODEL = "accounts.UserProfile"
@@ -90,6 +92,28 @@ DATABASES = {
     }
 }
 
+# REST_FRAMEWORK configure
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ]
+# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'critical': '10/hour', # 同一个ip，调用api次数限制
+        'user': '1000/day',
+        'anon': '100/day'
+    },
+    'DEFAULT_PAGINATION_CLASS': 'common.utils.CustomPaginationSerializer',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,                 # Default to 10
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

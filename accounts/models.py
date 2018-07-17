@@ -31,10 +31,9 @@ class UserProfile(AbstractUser):
     # 头像 默认使用default.png
     image = models.ImageField(
         upload_to="image/%Y/%m",
-        default="image/default.png",
+        default="",
         max_length=100,
         verbose_name="头像",
-        blank=True, null=True
     )
 
     # meta信息，即后台栏目名
@@ -54,12 +53,12 @@ class Banner(models.Model):
         upload_to="banner/%Y/%m",
         verbose_name="轮播图",
         max_length=100,
-        # default= '',
+        default= '',
         # blank=True,
         # null=True
     )
     # https://pypi.org/project/django-stdimage/
-    image1 = StdImageField(max_length=100, default= '',
+    image1 = StdImageField(max_length=100, default='',
         upload_to=UploadToUUID(path=datetime.datetime.now().strftime('banner/%Y/%m')),
         verbose_name="轮播图11",
         variations={'thumbnail': {'width': 100, 'height': 75}})
@@ -102,6 +101,7 @@ class Banner(models.Model):
     class Meta:
         verbose_name = "轮播图"
         verbose_name_plural = verbose_name
+        ordering = ('created_at',)
 
 
     # 重载__str__方法使后台不再直接显示object
