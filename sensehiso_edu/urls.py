@@ -21,8 +21,9 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 from rest_framework.documentation import include_docs_urls
 from rest_framework.authtoken import views
-
+from .api_urls import router
 from .settings import MEDIA_ROOT
+
 
 
 urlpatterns = [
@@ -44,7 +45,9 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     # drf 自带的token授权登录， 获取token需要向url post数据
     path('api-token-auth/', views.obtain_auth_token),
-    # api 接口 url
-    path('api/', include('sensehiso_edu.api_urls')),
 
+    # api 接口 url
+    # re_path('api/', include('sensehiso_edu.api_urls')),
+    # api 接口 url
+    re_path('^', include(router.urls))
 ]
