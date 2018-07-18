@@ -21,14 +21,31 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 from rest_framework.documentation import include_docs_urls
 from rest_framework.authtoken import views
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+
 from .api_urls import router
 from .settings import MEDIA_ROOT
-
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
+
+    # api 接口 url
+    re_path('^', include(router.urls)),
+    # api 接口 url
+    # re_path('api/', include('sensehiso_edu.api_urls')),
+    # api docs
+    path('api/docs/', include_docs_urls(title='SenseHiso EDU API DOCs')),
+    # api 调试登录
+    path('api-auth/', include('rest_framework.urls')),
+    # drf 自带的token授权登录， 获取token需要向url post数据
+    path('api-token-auth/', views.obtain_auth_token),
+
+    # jwt token
+    path('jwt-token', obtain_jwt_token),
+    path('jwt-token-refresh/', refresh_jwt_token),
+
     # TemplateView.as_view会将template转换为view
     path('', TemplateView.as_view(template_name="index.html"), name="index"),
 
@@ -39,15 +56,4 @@ urlpatterns = [
     # 富文本相关url
     path('ueditor/', include('DjangoUeditor.urls')),
 
-    # api docs
-    path('api/docs/', include_docs_urls(title='SenseHiso EDU API DOCs')),
-    # api 调试登录
-    path('api-auth/', include('rest_framework.urls')),
-    # drf 自带的token授权登录， 获取token需要向url post数据
-    path('api-token-auth/', views.obtain_auth_token),
-
-    # api 接口 url
-    # re_path('api/', include('sensehiso_edu.api_urls')),
-    # api 接口 url
-    re_path('^', include(router.urls))
 ]

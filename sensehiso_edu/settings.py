@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import sys
 import os
+import datetime
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,6 +32,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+# AUTHENTICATION_BACKENDS = (,
+#
+# )
+
 # Application definition
 # https://github.com/cooljacket/DjangoUeditor
 INSTALLED_APPS = [
@@ -47,11 +53,15 @@ INSTALLED_APPS = [
     'DjangoUeditor',
     'stdimage',
     'rest_framework',
+    'django_filters',
+    'corsheaders',
+    'rest_framework.authtoken',
 ]
 # 此处重载是为了使我们的UserProfile生效
 AUTH_USER_MODEL = "accounts.UserProfile"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +71,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 跨域 设置 https://github.com/ottoyiu/django-cors-headers
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8000',
+    '127.0.0.1：8099'
+)
 ROOT_URLCONF = 'sensehiso_edu.urls'
 
 TEMPLATES = [
@@ -102,6 +118,7 @@ DATABASES = {
 # }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -113,6 +130,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'common.utils.CustomPaginationSerializer',
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,                 # Default to 10
+}
+
+# drf-jwt相关配置
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
 
 # Password validation

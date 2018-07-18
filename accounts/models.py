@@ -48,14 +48,13 @@ class UserProfile(AbstractUser):
 
 # 轮播图model
 class Banner(models.Model):
-    title = models.CharField(max_length=100, verbose_name="标题")
+    title = models.CharField(max_length=100, verbose_name="标题", help_text='标题')
     image = models.ImageField(
         upload_to="banner/%Y/%m",
         verbose_name="轮播图",
         max_length=100,
         default= '',
-        # blank=True,
-        # null=True
+        help_text='轮播图'
     )
     # https://pypi.org/project/django-stdimage/
     image1 = StdImageField(max_length=100, default='',
@@ -68,8 +67,8 @@ class Banner(models.Model):
     # desc = models.TextField(verbose_name='内容描述')
     # 修改imagepath,不能传y m 进来，不能加斜杠是一个相对路径，相对于setting中配置的mediaroot
     desc = UEditorField(verbose_name="内容描述", width=800, height=300, imagePath="banner/ueditor/",
-                          filePath="banner/ueditor/", default='')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
+                          filePath="banner/ueditor/", default='', help_text='内容描述')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="添加时间", help_text='添加时间')
 
     # 在后台管理页面 列表里 显示图片缩略图
     # https://stackoverflow.com/questions/16307307/django-admin-show-image-from-imagefield
