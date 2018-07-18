@@ -32,9 +32,13 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-# AUTHENTICATION_BACKENDS = (,
-#
-# )
+# 第三方登录
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.weibo.WeiboOAuth2',
+    'social_core.backends.qq.QQOAuth2',
+    'social_core.backends.weixin.WeixinOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Application definition
 # https://github.com/cooljacket/DjangoUeditor
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_swagger',
     'accounts',
     'common',
     'xadmin',
@@ -56,6 +61,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'rest_framework.authtoken',
+    'social_django',
 ]
 # 此处重载是为了使我们的UserProfile生效
 AUTH_USER_MODEL = "accounts.UserProfile"
@@ -90,6 +96,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -192,3 +200,19 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+# 第三方登录相关
+SOCIAL_AUTH_WEIBO_KEY = ' '
+SOCIAL_AUTH_WEIBO_SECRET = ' '
+
+SOCIAL_AUTH_QQ_KEY = ' '
+SOCIAL_AUTH_QQ_SECRET = ' '
+
+SOCIAL_AUTH_WEIXIN_KEY = ' '
+SOCIAL_AUTH_WEIXIN_SECRET = ' '
+
+# The LOGIN_REDIRECT_URL will be used to redirect the user after authenticating from Django Login and Social Auth.
+# https://juejin.im/entry/5982e06f5188253d5523a460
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'home'
+
