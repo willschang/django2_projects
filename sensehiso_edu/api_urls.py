@@ -16,5 +16,5 @@ from .routers import router
 
 from accounts.api_view import BannerGenericViewSet, BannerGenericViewSet1
 
-router.register(r'demo', BannerGenericViewSet)
-router.register(r'demo_test', BannerGenericViewSet1)
+router.register(r'demo', BannerGenericViewSet, base_name='demo')
+router.register(r'hello', BannerGenericViewSet1, base_name='hello')
